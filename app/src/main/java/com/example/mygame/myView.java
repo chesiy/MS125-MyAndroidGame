@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import static com.example.mygame.global.blocks;
+import static com.example.mygame.global.roses;
 
 public class myView extends View {
     public float touchx,touchy;
@@ -19,7 +20,7 @@ public class myView extends View {
     private void init(){
         mPaint.setColor(Color.WHITE);
         global.background= BitmapFactory.decodeResource(getResources(),R.mipmap.background);
-        global.award=BitmapFactory.decodeResource(getResources(),R.mipmap.award);
+        global.rose=BitmapFactory.decodeResource(getResources(),R.mipmap.award);
         global.block=BitmapFactory.decodeResource(getResources(),R.mipmap.block);
 
         new Thread(new repaintit()).start();//新建线程，让画布重绘
@@ -52,13 +53,17 @@ public class myView extends View {
             touchy=event.getY();
             for(int i=0;i< blocks.size();i++){
                 Block bl=blocks.get(i);
-                Block tmp=blocks.get(blocks.size()-1);
                 if(bl.bang(touchx,touchy)){
                     global.score+=10;
-                    bl.stop();
-                    blocks.set(i,tmp);
-                    blocks.set(blocks.size()-1,bl);
-                    blocks.remove(blocks.size()-1);
+                    blocks.remove(bl);
+                    bl.have_gone=true;
+                }
+            }
+            for(int i=0;i<roses.size();i++){
+                Rose rs=roses.get(i);
+                if(rs.bang(touchx,touchy)){
+                    global.score+=20;
+                    roses.remove(rs);
                 }
             }
         }
@@ -66,16 +71,20 @@ public class myView extends View {
         return true;
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawBitmap(global.bkgd.Image,null,global.bkgd.r,mPaint);
+    //    System.err.println(blocks.size());
         if(global.life>0){
             for(int i = 0; i< blocks.size(); i++){
                 Block mobj= blocks.get(i);
-                if(mobj.havedisappeared==false){
-                    canvas.drawBitmap(mobj.Image,null,mobj.r,mPaint);
-                }
+                canvas.drawBitmap(mobj.Image,null,mobj.r,mPaint);
+            }
+            for(int i=0;i<roses.size();i++){
+                Rose mrs=roses.get(i);
+                canvas.drawBitmap(mrs.Image,null,mrs.r,mPaint);
             }
             canvas.drawText("SCORE:"+global.score,0,global.height-50,mPaint);
             canvas.drawText("LIFE:"+global.life,0,global.height-120,mPaint);
@@ -118,7 +127,7 @@ public class myView extends View {
                 try{Thread.sleep(3000);}catch (InterruptedException e){e.printStackTrace();}
                 try{
                     new Block();
-             //       new Award();
+                    new Rose();
                 }catch (Exception e){
                     e.printStackTrace();
                 }

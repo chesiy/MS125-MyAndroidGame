@@ -9,9 +9,9 @@ public class global {
     public static int life=3;
     public static int width,height;//屏幕宽、高
     public static Vector<Block> blocks=new Vector<Block>();
-    public static Vector<myObject> awards=new Vector<myObject>();
+    public static Vector<Rose> roses=new Vector<Rose>();
 
     public static Background bkgd;
-    public static Bitmap background,award,block;
+    public static Bitmap background,rose,block;
 
 }
