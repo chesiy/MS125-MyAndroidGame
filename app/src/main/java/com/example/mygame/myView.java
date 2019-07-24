@@ -46,7 +46,7 @@ public class myView extends View {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){//汇报触电
+    public boolean onTouchEvent(MotionEvent event){
         if(event.getAction()==MotionEvent.ACTION_DOWN){
             touchx=event.getX();
             touchy=event.getY();
@@ -55,10 +55,10 @@ public class myView extends View {
                 Block tmp=blocks.get(blocks.size()-1);
                 if(bl.bang(touchx,touchy)){
                     global.score+=10;
-                    blocks.remove(bl);
-               //     blocks.set(i,tmp);
-               //     blocks.set(blocks.size()-1,bl);
-               //     blocks.remove(blocks.size()-1);
+                    bl.stop();
+                    blocks.set(i,tmp);
+                    blocks.set(blocks.size()-1,bl);
+                    blocks.remove(blocks.size()-1);
                 }
             }
         }
@@ -66,16 +66,16 @@ public class myView extends View {
         return true;
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawBitmap(global.bkgd.Image,null,global.bkgd.r,mPaint);
-    //    System.err.println(blocks.size());
         if(global.life>0){
             for(int i = 0; i< blocks.size(); i++){
                 Block mobj= blocks.get(i);
-                canvas.drawBitmap(mobj.Image,null,mobj.r,mPaint);
+                if(mobj.havedisappeared==false){
+                    canvas.drawBitmap(mobj.Image,null,mobj.r,mPaint);
+                }
             }
             canvas.drawText("SCORE:"+global.score,0,global.height-50,mPaint);
             canvas.drawText("LIFE:"+global.life,0,global.height-120,mPaint);

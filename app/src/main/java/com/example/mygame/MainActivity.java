@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.Timer;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -16,18 +18,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(new myView(this));
     }
 
-    public void exit(){
-        MainActivity.this.finish();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{Thread.sleep(500);}catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.exit(0);
-            }
-        }).start();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
+
 
 }
 
