@@ -92,28 +92,33 @@ public class myView extends View {
         canvas.drawBitmap(global.bkgd.Image,null,global.bkgd.r,mPaint);
     //    System.err.println(blocks.size());
         if(global.life>0){
-            for(int i = 0; i< blocks.size(); i++){
-                Block mobj= blocks.get(i);
-                canvas.drawBitmap(mobj.Image,null,mobj.r,mPaint);
-            }
-            for(int i=0;i<roses.size();i++){
-                Rose mrs=roses.get(i);
-                canvas.drawBitmap(mrs.Image,null,mrs.r,mPaint);
-            }
-       //     System.err.println(booms.size());
-            for(int i=0;i<booms.size();i++) {
-                Boom mb=booms.get(i);
-                canvas.drawBitmap(mb.Image,null,mb.r,mPaint);
-                for(int j=0;j<6;j++) {
-                    System.err.println(j + " " + booms.get(i).Image.equals(global.ex.get(j)));
+            if(MainActivity.mp.isPlaying()){
+                for(int i = 0; i< blocks.size(); i++){
+                    Block mobj= blocks.get(i);
+                    canvas.drawBitmap(mobj.Image,null,mobj.r,mPaint);
                 }
-                System.err.println("aaaaa");
-            }
+                for(int i=0;i<roses.size();i++){
+                    Rose mrs=roses.get(i);
+                    canvas.drawBitmap(mrs.Image,null,mrs.r,mPaint);
+                }
+                for(int i=0;i<booms.size();i++) {
+                    Boom mb=booms.get(i);
+                    canvas.drawBitmap(mb.Image,null,mb.r,mPaint);
+                }
 
-            canvas.drawText("SCORE:" + global.score, 0, global.height - 50, mPaint);
-            canvas.drawText("LIFE:" + global.life, 0, global.height - 120, mPaint);
+                canvas.drawText("SCORE:" + global.score, 0, global.height - 50, mPaint);
+                canvas.drawText("LIFE:" + global.life, 0, global.height - 120, mPaint);
+            }
+            else{
+                global.GameState=global.WIN;
+                mPaint.setColor(Color.YELLOW);
+                mPaint.setTextSize(70);
+                canvas.drawText("Brilliant! You Win!",250,global.height/2-80,mPaint);
+                canvas.drawText("Your Score:"+global.score,250,global.height/2,mPaint);
+            }
         }
         else{
+            global.GameState=global.LOSE;
             mPaint.setColor(Color.YELLOW);
             mPaint.setTextSize(70);
             canvas.drawText("What A Pity!",200,global.height/2-80,mPaint);

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public MediaPlayer mp=null;
+    public static MediaPlayer mp=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,25 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
         mp=MediaPlayer.create(this,R.raw.music);
         mp.start();
-    /*    Runnable runnable=new Runnable() {
-            @Override
-            public void run() {
-                while(true){
-                    try{
-                        Thread.sleep(10);
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-                    mp.start();
-                    try{
-                        Thread.sleep(10);
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };*/
- //       runnable.run();
     }
 
     @Override

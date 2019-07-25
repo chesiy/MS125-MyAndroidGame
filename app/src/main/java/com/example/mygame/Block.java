@@ -1,7 +1,7 @@
 package com.example.mygame;
 
 public class Block extends myObject implements Runnable{
-    private long sd0=(long)(Math.random()*10)+10;//[10,20),白块速度不同
+    private long sd0=(long)(Math.random()*5)+8;//白块速度不同
 
     public boolean have_gone;
     public Block(){
@@ -22,11 +22,11 @@ public class Block extends myObject implements Runnable{
     public void run(){
         while(global.life>0){
             try{Thread.sleep(sd0);}catch (InterruptedException e){e.printStackTrace();}
-            setY(r.top+2);
+            setY(r.top+3);
             if(r.top>=global.height)//block飞出屏幕 跳出循环
                 break;
         }
-        if(!have_gone){
+        if(!have_gone&&global.GameState==global.RUNING){
             global.blocks.remove(this);
             global.life--;
         }
