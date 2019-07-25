@@ -1,6 +1,7 @@
 package com.example.mygame;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,19 +10,30 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Vector;
+
 import static com.example.mygame.global.blocks;
+import static com.example.mygame.global.booms;
 import static com.example.mygame.global.roses;
 
 public class myView extends View {
     public float touchx,touchy;
     private Paint mPaint=new Paint();
     private Canvas mCanvas=null;
+ //   public Vector<Integer> time=new Vector<Integer>();
 
     private void init(){
         mPaint.setColor(Color.WHITE);
         global.background= BitmapFactory.decodeResource(getResources(),R.mipmap.background);
         global.rose=BitmapFactory.decodeResource(getResources(),R.mipmap.award);
         global.block=BitmapFactory.decodeResource(getResources(),R.mipmap.block);
+
+        global.ex.add(BitmapFactory.decodeResource(getResources(),R.mipmap.e1));
+        global.ex.add(BitmapFactory.decodeResource(getResources(),R.mipmap.e2));
+        global.ex.add(BitmapFactory.decodeResource(getResources(),R.mipmap.e3));
+        global.ex.add(BitmapFactory.decodeResource(getResources(),R.mipmap.e4));
+        global.ex.add(BitmapFactory.decodeResource(getResources(),R.mipmap.e5));
+        global.ex.add(BitmapFactory.decodeResource(getResources(),R.mipmap.e6));
 
         new Thread(new repaintit()).start();//新建线程，让画布重绘
         new Thread(new loadobj()).start();//新建线程，加载白块和玫瑰
@@ -47,22 +59,26 @@ public class myView extends View {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){
-        if(event.getAction()==MotionEvent.ACTION_DOWN){
-            touchx=event.getX();
-            touchy=event.getY();
-            for(int i=0;i< blocks.size();i++){
-                Block bl=blocks.get(i);
-                if(bl.bang(touchx,touchy)){
-                    global.score+=10;
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            touchx = event.getX();
+            touchy = event.getY();
+            for (int i = 0; i < blocks.size(); i++) {
+                Block bl = blocks.get(i);
+                if (bl.bang(touchx, touchy)) {
+                    global.score += 10;
                     blocks.remove(bl);
-                    bl.have_gone=true;
+                    bl.have_gone = true;
                 }
             }
-            for(int i=0;i<roses.size();i++){
-                Rose rs=roses.get(i);
-                if(rs.bang(touchx,touchy)){
-                    global.score+=20;
+            for (int i = 0; i < roses.size(); i++) {
+                Rose rs = roses.get(i);
+                if (rs.bang(touchx, touchy)) {
+                    global.score += 20;
+                    Boom bm = new Boom(rs.r.left, rs.r.top);
+                    booms.add(bm);
+                    //   bm.run();
+                    rs.boom(bm);
                     roses.remove(rs);
                 }
             }
@@ -70,8 +86,6 @@ public class myView extends View {
         invalidate();
         return true;
     }
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -86,8 +100,18 @@ public class myView extends View {
                 Rose mrs=roses.get(i);
                 canvas.drawBitmap(mrs.Image,null,mrs.r,mPaint);
             }
-            canvas.drawText("SCORE:"+global.score,0,global.height-50,mPaint);
-            canvas.drawText("LIFE:"+global.life,0,global.height-120,mPaint);
+       //     System.err.println(booms.size());
+            for(int i=0;i<booms.size();i++) {
+                Boom mb=booms.get(i);
+                canvas.drawBitmap(mb.Image,null,mb.r,mPaint);
+                for(int j=0;j<6;j++) {
+                    System.err.println(j + " " + booms.get(i).Image.equals(global.ex.get(j)));
+                }
+                System.err.println("aaaaa");
+            }
+
+            canvas.drawText("SCORE:" + global.score, 0, global.height - 50, mPaint);
+            canvas.drawText("LIFE:" + global.life, 0, global.height - 120, mPaint);
         }
         else{
             mPaint.setColor(Color.YELLOW);
@@ -123,8 +147,9 @@ public class myView extends View {
     private class loadobj implements Runnable{
         @Override
         public void run(){
-            while(true){//每1200ms出现一个白块
-                try{Thread.sleep(3000);}catch (InterruptedException e){e.printStackTrace();}
+            int i=0;
+            while(true){//每多少ms出现一个白块
+                try{Thread.sleep(656);}catch (InterruptedException e){e.printStackTrace();}
                 try{
                     new Block();
                     new Rose();

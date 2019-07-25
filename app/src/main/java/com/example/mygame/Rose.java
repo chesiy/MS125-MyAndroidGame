@@ -31,4 +31,8 @@ public class Rose extends myObject implements Runnable{
         }
         global.roses.remove(this);
     }
+
+    public void boom(Boom bm){
+        new Thread(bm).start();
+    }
 }

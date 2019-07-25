@@ -10,8 +10,9 @@ public class global {
     public static int width,height;//屏幕宽、高
     public static Vector<Block> blocks=new Vector<Block>();
     public static Vector<Rose> roses=new Vector<Rose>();
+    public static Vector<Boom> booms=new Vector<Boom>();
 
     public static Background bkgd;
-    public static Bitmap background,rose,block;
-
+    public static Bitmap background,rose,block,boom;
+    public static Vector<Bitmap> ex=new Vector<Bitmap>();
 }

@@ -40,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
  //       runnable.run();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mp.stop();
+        exit();
+    }
+
     public void exit(){
         MainActivity.this.finish();
         new Thread(new Runnable() {
