@@ -1,14 +1,10 @@
 # MyAndroidGame
-在过去的三天里，我仿照“钢琴块”写了一个Android音乐小游戏，实现了背景音乐的设置、背景的运动和点到玫瑰时的绽放效果（虽然动画有点傻逼）。
+In the last three days, I completed a Android-Based game, which is similar to "Piano Tiles"(别踩白块儿). 
+  
+BGM is the soul of a music game, I chose 'Summer', a vivid light music. By importing 'android.media.MediaPlayer', it's easy to play music in my game.
+  
+What's more, to ensure the fluency of the game, I tried to use multi-Thread, which was unfamiliar to me. My strategy is "everything has a thread",so all the movements and animations of background, white blocks, as well as roses have their own thread. Frankly speaking, too many threads may be more of a hindrance than a help, but for a beginner, this structure is the easiest to handle.  
 
-写游戏的过程中，我遇到了好多问题，包括一开始对线程是怎么进行的一无所知，所以对结构怎么安排非常的懵；
+In the process, I met loads of problems. For example, I created a new thread for music playing at first, but when run the game, it only plays music without presenting the view. So I deleted the thread for music, and just start the music in the function 'OnCreate',then everything turns out to be ok. But why???? 
 
-后来又遇到了在一个线程进行过程中需要收到另一个线程发来的消息的情况，想了很久解决方案，甚至想要完全改掉自己的结构，推倒重来，好在最后发现只需要轻微的修改即可。
-
-加入背景音乐的过程中，我一开始的做法是在MainActivity的onCreate方法里面新建一个Runnable线程，但非常奇怪，运行起来只听见声音而没有了图像，后来随意尝试删掉了Runnable，直接play（不开新的线程）就既有了声音，又有了图像。最后我写了一个绽放的动画，写这个的时候我的矩阵出现了bug，后来在同学的帮助下找到了问题。
-
-
-总而言之，我的这三天就是在不断地犯错误、再犯错误，经历了从一头雾水到思路渐渐清晰的过程，好在最后基本完成了任务，除了我自己之外，还非常非常感谢助教和小组同学的友情帮助，感觉自己当初选择写小游戏真是太机智了hhh。
-
-
-下面来简单介绍一下游戏规则叭。点到白块加十分，漏掉白块life减1。点到玫瑰加20分，漏掉玫瑰life不减，非常的naïve。
+Finally, I'd like to show the rule of my game. If you touch a white block, you can gain 10  points, but if you miss it, you will lose one life(3 life in total). If you touch a rose, you can gain 20 points, and lose it won't cause any loss in both your point and life.
